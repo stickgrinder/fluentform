@@ -54,7 +54,7 @@ Some nice feature that will soon be documented in further details:
 - Validator extends standard CI one so that you could put your custom validation callbacks in the model. Just add `"callback_myfunction_model[mymodel]"` into validation rules to invoke `$this->mymodel->myfunction()` as a validation method.
 - Renderer and validator could be rewritten if necessary: I plan to provide an interface to inherit from withh the stable release. The goal is to allow anybody to implement other renderers (for integration with template engines and such) and maybe more advanced validators. Even if decoupling is not perfect yet, a couple of public functions are already available to inject your custom objects:
 
-    $form = $this->formbuilder->new_form();
+    $form = $this->fluentform->new_form();
 
     $form->set_validator(new Custom_validator($form));
     $form_>set_renderer(new Custom_renderer($form));
@@ -85,8 +85,9 @@ Some nice feature that will soon be documented in further details:
 
 # Contacts
 
-- [Log Issues or Suggestions](https://github.com/stickgrinder/formbuilder/issues)
+- [Log Issues or Suggestions](https://github.com/stickgrinder/Fluentform/issues)
 - [Follow me on Twitter](http://twitter.com/stickgrinder)
+- [Read my rants on Tumblr] (http://arantaweek.tumblr.com)
 
 # Credits
 
