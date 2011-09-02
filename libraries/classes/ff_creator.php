@@ -431,7 +431,8 @@ class FF_Creator
   public function add_text_field ( $name = '', $label = '', $value = '', $attributes=array(), $rules='' )
   {
     return $this->_add_field( array(
-      'type' => 'text',
+	  //allow input type to be set, default to type="text"
+      'type' => isset($attributes['type']) ? $attributes['type'] : 'text',
       'name' => $name,
       'label' => $label,
       'value' => $value,
@@ -611,8 +612,8 @@ class FF_Creator
 
   public function add_email_field ( $name = '', $label = '', $value = '', $attributes = array(), $required = FALSE )
   {
-    // add email class
-    $attributes = $this->_process_attributes($attributes, array( 'email' ));
+    // add email class and set type="email" if type not explicitly overriden by user
+    $attributes = array_merge( array( 'type' => 'email' ), $this->_process_attributes($attributes, array( 'email' )) );
     // set optimal rules for email validation
     $rules = 'trim|' . ($required ? 'required|' : '') . 'valid_email|xss_clean';
 
@@ -636,8 +637,8 @@ class FF_Creator
 
   public function add_numeric_field ( $name = '', $label = '', $value = '', $attributes = array(), $required = FALSE )
   {
-    // add number class
-    $attributes = $this->_process_attributes($attributes, array( 'number' ));
+    // add numeric class and set type="number" if type not explicitly overridden by user
+    $attributes = array_merge(array( 'type' => 'number' ) , $this->_process_attributes($attributes, array( 'numeric' )) );
     // set optimal rules for email validation
     $rules = 'trim|' . ($required ? 'required|' : '') . 'numeric';
 
@@ -645,10 +646,10 @@ class FF_Creator
 
   }
 
-  public function add_integer_field ( $name = '', $label = '', $value = '', $attributes=array() )
+  public function add_integer_field ( $name = '', $label = '', $value = '', $attributes=array(), $required = FALSE )
   {
-    // add number class
-    $attributes = $this->_process_attributes($attributes, array( 'integer' ));
+    // add integer class and set type="number" if type not explicitly overridden by user
+    $attributes = array_merge(array( 'type' => 'number' ) , $this->_process_attributes($attributes, array( 'integer' )) );
     // set optimal rules for email validation
     $rules = 'trim|' . ($required ? 'required|' : '') . 'integer';
 
