@@ -340,6 +340,36 @@ class FF_Validator extends CI_form_validation
       }
     }
   }
+	
+  /**
+   * Match a basic regex pattern.
+   * Delimiters not needed, but / or # delims are handled
+   * Supports only the caseless modifier flag 'i'
+   * 
+   * @param $str
+   * @param $pattern
+   * @return bool
+   */
+  function match_regex($str, $pattern) {
+	//remove leading/trailing whitespace
+	$pattern = trim($pattern);
+	  
+	//check for case-insensitive flag.  Other flags not supported in this method.
+	$i = '';
+    if(substr($pattern, -1)=='i')
+    {
+	    $i = 'i';
+	    $pattern = rtrim($pattern,'i');
+    }
+    
+    //remove '/' or '#' that might have been included as pattern delims
+    //and assemble the final pattern
+    $pattern = '/^' . trim($pattern,'/#') . '$/'.$i;
+	
+	//do the match
+    if (preg_match($pattern, $str)) return TRUE;
+    return FALSE;
+  }
 }
 // --------------------------------------------------------------------
 /**
