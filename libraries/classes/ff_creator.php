@@ -325,7 +325,12 @@ class FF_Creator
     return $this;
   }
 
-  // Generic field setter (it always knows it has to set _last_field)
+  /**
+   * Generic field setter (it always knows it has to set _last_field)
+   * 
+   * @param $field
+   * @return FF_Creator
+   */
   private function _add_field($field)
   {
 
@@ -371,7 +376,13 @@ class FF_Creator
     return $this;
   }
 
-  // Understand how attributes have been passed and reconstruct them a better way
+  /**
+   * Understand how attributes have been passed and reconstruct them a better way
+   * 
+   * @param $attributes
+   * @param bool $additional_classes
+   * @return array
+   */
   private function _process_attributes($attributes, $additional_classes = FALSE)
   {
 
@@ -419,6 +430,14 @@ class FF_Creator
   }
 
   // Basic field types definition
+	
+  /**
+   * Add a hidden field.  <input type="hidden" ...>
+   * 
+   * @param string $name
+   * @param string $value
+   * @return FF_Creator
+   */
   public function add_hidden_field ( $name = '', $value = '' )
   {
     return $this->_add_field( array(
@@ -428,19 +447,47 @@ class FF_Creator
     ));
   }
 
+  /**
+   * Add a simple text field. <input type="text" ...>
+   * 
+   * @param string $name
+   * @param string $label
+   * @param string $value
+   * @param array $attributes
+   * @param string $rules
+   * @return FF_Creator
+   */
   public function add_text_field ( $name = '', $label = '', $value = '', $attributes=array(), $rules='' )
   {
+	$attributes = $this->_process_attributes($attributes, array('text', 'field'));
+	$type = 'text';
+	if(isset($attributes['type']) AND in_array($attributes['type'],array('text','email','url','number')))
+	{
+	  $type = $attributes['type'];
+	  unset($attributes['type']);
+	}	
+	
     return $this->_add_field( array(
 	  //allow input type to be set, default to type="text"
-      'type' => isset($attributes['type']) ? $attributes['type'] : 'text',
+      'type' => $type,
       'name' => $name,
       'label' => $label,
       'value' => $value,
-      'attributes' => $this->_process_attributes($attributes, array('text', 'field')),
+      'attributes' => $attributes,
       'rules' => $rules,
     ));
   }
 
+  /**
+   * Add a single file upload field. <input type="file" ...>
+   * 
+   * @param string $name
+   * @param string $label
+   * @param string $value
+   * @param array $attributes
+   * @param string $rules
+   * @return FF_Creator
+   */
   public function add_file_field ( $name = '', $label = '', $value = '', $attributes=array(), $rules='' )
   {
     // form must be multipart, to submit a file
@@ -456,6 +503,16 @@ class FF_Creator
     ));
   }
 
+  /**
+   * Add a textarea field i.e. <textarea...></textarea>
+   * 
+   * @param string $name
+   * @param string $label
+   * @param string $value
+   * @param array $attributes
+   * @param string $rules
+   * @return FF_Creator
+   */
   public function add_text_area ( $name = '', $label = '', $value = '', $attributes=array(), $rules='' )
   {
     return $this->_add_field( array(
@@ -468,6 +525,16 @@ class FF_Creator
     ));
   }
 
+  /**
+   * Add a password field, i.e. <input type="password" ...>
+   * 
+   * @param string $name
+   * @param string $label
+   * @param string $value
+   * @param array $attributes
+   * @param string $rules
+   * @return FF_Creator
+   */
   public function add_password_field ( $name = '', $label = '', $value = '', $attributes=array(), $rules='' )
   {
     return $this->_add_field( array(
@@ -480,6 +547,17 @@ class FF_Creator
     ));
   }
 
+  /**
+   * Add a regular dropdown. i.e. <input type="select" ...>
+   * 
+   * @param string $name
+   * @param string $label
+   * @param array $options
+   * @param string $value
+   * @param array $attributes
+   * @param string $rules
+   * @return FF_Creator
+   */
   public function add_dropdown_field ( $name = '', $label = '', $options = array(), $value = '', $attributes=array(), $rules=''  )
   {
 
@@ -499,6 +577,17 @@ class FF_Creator
 
   }
 
+  /**
+   * Add a multiselect dropdown
+   * 
+   * @param string $name
+   * @param string $label
+   * @param array $options
+   * @param string $value
+   * @param array $attributes
+   * @param string $rules
+   * @return FF_Creator
+   */
   public function add_multiselect_field ( $name = '', $label = '', $options = array(), $value = '', $attributes=array(), $rules='' )
   {
 
@@ -519,6 +608,18 @@ class FF_Creator
 
   }
 
+  /**
+   * Add a single checkbox.
+   * 
+   * @param string $name
+   * @param string $label
+   * @param int $label_position
+   * @param string $value
+   * @param bool $checked
+   * @param array $attributes
+   * @param string $rules
+   * @return FF_Creator
+   */
   public function add_checkbox ( $name = '', $label = '', $label_position = FF_R_CRB_LABEL_AFTER, $value = '', $checked = FALSE, $attributes=array(), $rules='' )
   {
     return $this->_add_field( array(
@@ -533,6 +634,17 @@ class FF_Creator
     ));
   }
 
+  /**
+   * Add a group of checkboxes.
+   * 
+   * @param string $name
+   * @param string $label
+   * @param int $label_position
+   * @param array $options
+   * @param array $attributes
+   * @param string $rules
+   * @return FF_Creator
+   */
   public function add_checkboxes ( $name = '', $label = '', $label_position = FF_R_CRB_LABEL_AFTER, $options = array(), $attributes=array(), $rules='' )
   {
 
@@ -553,6 +665,18 @@ class FF_Creator
 
   }
 
+  /**
+   * Add a single radio button.
+   * 
+   * @param string $name
+   * @param string $label
+   * @param int $label_position
+   * @param string $value
+   * @param bool $selected
+   * @param array $attributes
+   * @param string $rules
+   * @return FF_Creator
+   */
   public function add_radiobutton ( $name = '', $label = '', $label_position = FF_R_CRB_LABEL_AFTER, $value = '', $selected = FALSE, $attributes=array(), $rules='' )
   {
     return $this->_add_field( array(
@@ -567,6 +691,18 @@ class FF_Creator
     ));
   }
 
+  /**
+   * Add a radio button group.
+   * 
+   * @param string $name
+   * @param string $label
+   * @param int $label_position
+   * @param array $options
+   * @param string $value
+   * @param array $attributes
+   * @param string $rules
+   * @return FF_Creator
+   */
   public function add_radiobuttons ( $name = '', $label = '', $label_position = FF_R_CRB_LABEL_AFTER, $options = array(), $value = '', $attributes=array(), $rules='' )
   {
 
@@ -588,6 +724,15 @@ class FF_Creator
 
   }
 
+  /**
+   * Add a button element with type=$type and "button" added to class value. 
+   * 
+   * @param string $name
+   * @param string $value
+   * @param string $type
+   * @param array $attributes
+   * @return FF_Creator
+   */
   public function add_button ( $name = '', $value = '', $type = 'button', $attributes = array() )
   {
     return $this->_add_field( array(
@@ -600,27 +745,41 @@ class FF_Creator
 
   // Advanced field types definition
 
+  /**
+   * Add a submit button.
+   * 
+   * @param string $name
+   * @param string $value
+   * @param array $attributes
+   * @return FF_Creator
+   */
   public function add_submit ( $name = '', $value = '', $attributes = array() )
   {
     return $this->add_button ( $name, $value, 'submit', $attributes );
   }
 
+  /**
+   * @param string $name
+   * @param string $value
+   * @param array $attributes
+   * @return FF_Creator
+   */
   public function add_reset ( $name = '', $value = '', $attributes = array() )
   {
     return $this->add_button ( $name, $value, 'reset', $attributes );
   }
 
-  public function add_email_field ( $name = '', $label = '', $value = '', $attributes = array(), $required = FALSE )
-  {
-    // add email class and set type="email" if type not explicitly overriden by user
-    $attributes = array_merge( array( 'type' => 'email' ), $this->_process_attributes($attributes, array( 'email' )) );
-    // set optimal rules for email validation
-    $rules = 'trim|' . ($required ? 'required|' : '') . 'valid_email|xss_clean';
 
-    return $this->add_text_field( $name, $label, $value, $attributes, $rules );
-
-  }
-
+  /**
+   * Add a password block, i.e. two fields: password + confirm password.
+   * Auto-validation supplied: required|min_length[6] and the two values must match. 
+   * 
+   * @param string $name
+   * @param string $label
+   * @param string $conf_label
+   * @param array $attributes
+   * @return FF_Creator
+   */
   public function add_password_block ( $name = '', $label = '', $conf_label = '', $attributes = array() )
   {
 
@@ -635,23 +794,102 @@ class FF_Creator
 
   }
 
-  public function add_numeric_field ( $name = '', $label = '', $value = '', $attributes = array(), $required = FALSE )
+  /**
+   * Add text input with type="email" and "email" added to class value.
+   * Last argument $required can be a boolean for automatic rules, 
+   * or a Form_Validation rule string may be supplied. 
+   * 
+   * @param string $name
+   * @param string $label
+   * @param string $value
+   * @param array $attributes
+   * @param bool $required
+   * @return FF_Creator
+   */
+  public function add_email_field ( $name = '', $label = '', $value = '', $attributes = array(), $required = FALSE )
   {
-    // add numeric class and set type="number" if type not explicitly overridden by user
-    $attributes = array_merge(array( 'type' => 'number' ) , $this->_process_attributes($attributes, array( 'numeric' )) );
-    // set optimal rules for email validation
-    $rules = 'trim|' . ($required ? 'required|' : '') . 'numeric';
+    // add email class and set type = "email"
+    $attributes = array_merge( $this->_process_attributes($attributes, array( 'email' )), array( 'type' => 'email' ) );
 
+    // by default set optimal rules for email validation, or allow manual rules
+    $rules = is_bool($required) ? 'trim|' . ($required ? 'required|' : '') . 'valid_email|xss_clean' : $required;
+	
     return $this->add_text_field( $name, $label, $value, $attributes, $rules );
-
   }
 
+  /**
+   * Add text input with type="url" and "url" added to class value.
+   * Last argument $required can be a boolean for automatic rules, 
+   * or a Form_Validation rule string may be supplied.
+   * Note that the automatic URL validation is quite basic!  Supply your own rules
+   * if you require something more exhaustive.  Use the match_regex[] rule included
+   * with Fluentform.  
+   * 
+   * @param string $name
+   * @param string $label
+   * @param string $value
+   * @param array $attributes
+   * @param bool $required
+   * @return FF_Creator
+   */
+  public function add_url_field ( $name = '', $label = '', $value = '', $attributes = array(), $required = FALSE )
+  {
+    // add url class and set type = "url"
+    $attributes = array_merge( $this->_process_attributes($attributes, array( 'url' )), array( 'type' => 'url' ) );
+	  
+	//simple url regex
+	$ptn = '([\<]?)((http(?:s)?\:\/\/)?[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*\.[a-zA-Z]{2,6}(?:\/?|(?:\/[\w\-]+)*)'
+	       .'(?:\/?|\/\w+\.[a-zA-Z]{2,4}(?:\?[\w]+\=[\w\-]+)?)?(?:\&[\w]+\=[\w\-]?(\&)*)*)([\>]?)';  
+    
+    // set optimal rules for url validation, or allow manual rules
+    $rules = is_bool($required) ? 'trim|' . ($required ? 'required|' : '') . 'match_regex['.$ptn.']|prep_url|xss_clean' 
+		                        : $required;
+
+    return $this->add_text_field( $name, $label, $value, $attributes, $rules );
+  }
+	
+  /**
+   * Add a text input with type="number" and "numeric" added to supplied class value.
+   * Last argument $required can be a boolean for automatic rules, 
+   * or a Form_Validation rule string may be supplied.  
+   * 
+   * @param string $name
+   * @param string $label
+   * @param string $value
+   * @param array $attributes
+   * @param bool $required
+   * @return FF_Creator
+   */
+  public function add_numeric_field ( $name = '', $label = '', $value = '', $attributes = array(), $required = FALSE )
+  {
+    // add numeric class and set type="number" 
+    $attributes = array_merge( $this->_process_attributes($attributes, array( 'numeric' )), array( 'type' => 'number' ) );
+	  
+    // by default set optimal rules for numeric validation, or use manual rule string
+    $rules = is_bool($required) ? 'trim|' . ($required ? 'required|' : '') . 'numeric' : $required;
+
+    return $this->add_text_field( $name, $label, $value, $attributes, $rules );
+  }
+
+  /**
+   * Add a text input with type="number" and "integer" added to supplied class value.
+   * Last argument $required can be a boolean for automatic rules, 
+   * or a Form_Validation rule string may be supplied.  
+   * 
+   * @param string $name
+   * @param string $label
+   * @param string $value
+   * @param array $attributes
+   * @param bool $required
+   * @return FF_Creator
+   */
   public function add_integer_field ( $name = '', $label = '', $value = '', $attributes=array(), $required = FALSE )
   {
     // add integer class and set type="number" if type not explicitly overridden by user
-    $attributes = array_merge(array( 'type' => 'number' ) , $this->_process_attributes($attributes, array( 'integer' )) );
+    $attributes = array_merge( $this->_process_attributes($attributes, array( 'integer' )), array( 'type' => 'number' ) );
+	  
     // set optimal rules for email validation
-    $rules = 'trim|' . ($required ? 'required|' : '') . 'integer';
+    $rules = is_bool($required) ? 'trim|' . ($required ? 'required|' : '') . 'integer' : $required;
 
     return $this->add_text_field( $name, $label, $value, $attributes, $rules );
 
