@@ -11,10 +11,18 @@ class FF_Creator
   private $_config; // configuration options (from config file, "creator" key)
 
   private $_last_group; // hold last group and field information; useful to implement fluent interface
-  private $_last_field; // NOTE: you could explicitely close last opened group using close_group() method
+  private $_last_field; // NOTE: you could explicitly close last opened group using close_group() method
   private $_unique_ids_registry;
 
+  // -------------------------------------------------------------
   // Magic Methods
+  // -------------------------------------------------------------
+	
+  /**
+   * Constructor. Initializes some defaults for form structure.
+   * 
+   * @param array $config
+   */
   public function __construct( $config = array() )
   {
     $this->_form_structure = array(
@@ -34,6 +42,12 @@ class FF_Creator
     $this->_unique_ids_registry = array();
   }
 
+  /**
+   * __toString() renders the form.
+   * 
+   * @see FF_Creator::render_form()
+   * @return false|string
+   */
   public function __toString()
   {
 
@@ -41,42 +55,78 @@ class FF_Creator
 
   }
 
+  // -------------------------------------------------------------
   // Dependency injection methods
-  public function set_renderer( FF_renderer $_renderer )
+  // -------------------------------------------------------------
+
+  /**
+   * Set (compose) the renderer object
+   * 
+   * @param FF_Renderer $_renderer
+   * @return FF_Creator
+   */
+  public function set_renderer( FF_Renderer $_renderer )
   {
     $this->_renderer = $_renderer;
     return $this;
   }
 
+  /**
+   * Get the FluentForm renderer object.
+   * 
+   * @return FF_Renderer
+   */
   public function get_renderer()
   {
     return $this->_renderer;
   }
 
-
+  /**
+   * Set (compose) the FluentForm form validation object.  
+   * 
+   * @param FF_validator $_validator
+   * @return FF_Creator
+   */
   public function set_validator( FF_validator $_validator )
   {
     $this->_validator = $_validator;
     return $this;
   }
 
+  /**
+   * Return the FluentForm form validation object
+   * 
+   * @return FF_Validator 
+   */
   public function get_validator()
   {
     return $this->_validator;
   }
 
-
+  /**
+   * Return the entire form structure as an array.
+   * 
+   * @return array
+   */
   public function get_form_structure()
   {
     return (array)$this->_form_structure;
   }
 
-  public function get_groups() {
+  /**
+   * Return an array of the field groups
+   * 
+   * @return array
+   */
+  public function get_groups() 
+  {
     $groups = array();
     $items = $this->_form_structure['items'];
 
-    foreach ($items as $item_name => $item) {
-      if ($item['type'] === 'group') {
+    foreach ($items as $item_name => $item) 
+    {
+      if ($item['type'] === 'group') 
+      {
         $groups[$item_name] = $item;
       }
     }
@@ -84,6 +134,12 @@ class FF_Creator
     return $groups;
   }
 
+  /**
+   * Set the form structure from supplied array.
+   * 
+   * @param array $form_structure
+   * @return FF_Creator
+   */
   public function set_form_structure( array $form_structure )
   {
     if (is_array($form_structure) && ! empty($form_structure)) {
@@ -93,18 +149,31 @@ class FF_Creator
     return $this;
   }
 
+  /**
+   * Return the form structure as a string, i.e. var_dump() it.
+   * 
+   * @return string
+   */
   public function dump_form_structure()
   {
     return var_export($this->get_form_structure());
   }
 
+  /**
+   * Load the form structure from supplied string.
+   * 
+   * @param string $form_structure
+   * @return FF_Creator
+   */
   public function load_form_structure( string $form_structure )
   {
     return eval('$this->set_form_structure('.(string)$form_structure.');');
   }
 
-
+  // -------------------------------------------------------------
   // Rendering functions proxies
+  // -------------------------------------------------------------
+  	
   public function render_raw_field( $field_name = FALSE )
   {
 
@@ -123,6 +192,13 @@ class FF_Creator
     return FALSE;
   }
 
+  /**
+   * Render a single form field.
+   * Returns false if renderer is not set.
+   * 
+   * @param bool $field_name
+   * @return string|false
+   */
   public function render_field( $field_name = FALSE )
   {
 
@@ -140,6 +216,13 @@ class FF_Creator
     return FALSE;
   }
 
+  /**
+   * Render a single field group <fieldset>...</fieldset>
+   * Returns false if renderer is not set.
+   * 
+   * @param bool $group_name
+   * @return string|false
+   */
   public function render_group( $group_name = FALSE )
   {
 
@@ -159,6 +242,12 @@ class FF_Creator
     return FALSE;
   }
 
+  /**
+   * Render the main form element <form ...>
+   * Returns false if renderer is not set
+   * 
+   * @return string|false
+   */
   public function render_form_tag()
   {
 
@@ -176,6 +265,12 @@ class FF_Creator
     return FALSE;
   }
 
+  /**
+   * Close the form. </form>
+   * Returns false if renderer is not set.
+   * 
+   * @return string|false
+   */
   public function render_form_close()
   {
 
@@ -193,6 +288,12 @@ class FF_Creator
     return FALSE;
   }
 
+  /**
+   * Return the form html as a string.
+   * Returns false if form renderer is not set.
+   * 
+   * @return string|false
+   */
   public function render_form()
   {
 
@@ -210,7 +311,11 @@ class FF_Creator
     return FALSE;
   }
 
-  // Validator proxy function
+  /**
+   * Validator proxy function. i.e. Runs the form validation.
+   * 
+   * @return bool
+   */
   public function validate()
   {
 
@@ -227,6 +332,11 @@ class FF_Creator
 
   }
 
+  /**
+   * Check if we have any buttons for the form structure.
+   * 
+   * @return bool
+   */
   private function has_buttons ()
   {
 
@@ -253,7 +363,16 @@ class FF_Creator
 
   }
 
+  // -------------------------------------------------------------
   // Form construction set
+  // -------------------------------------------------------------
+
+  /**
+   * Set form element enctype property. 
+   * 
+   * @param bool $is_multipart If true, enctype="multipart/form-data", else property omitted.
+   * @return FF_Creator
+   */
   public function make_multipart($is_multipart = TRUE)
   {
     $this->_form_structure['properties']['is_multipart'] = (bool)$is_multipart;
@@ -261,6 +380,13 @@ class FF_Creator
     return $this;
   }
 
+  /**
+   * Set the action property of the form html element.
+   * 
+   * @param null $action
+   * @return FF_Creator
+   * @see FF_Creator::set_properties()
+   */
   public function set_action ( $action = NULL )
   {
     $this->_form_structure['properties']['action'] = $action;
@@ -268,6 +394,13 @@ class FF_Creator
     return $this;
   }
 
+  /**
+   * Set form attributes, i.e. properties of the form html element.
+   * 
+   * @param null|array $attributes
+   * @return FF_Creator
+   * @see FF_Creator::set_properties()
+   */
   public function set_attributes ( $attributes = NULL )
   {
     $this->_form_structure['properties']['attributes'] = $this->_process_attributes($attributes, array('fluentform', 'form'));
@@ -275,7 +408,13 @@ class FF_Creator
     return $this;
   }
 
-  public function set_max_file_size( $size = FALSE )
+  /**
+   * Set the max_file_size form attribute.
+   * 
+   * @param int $size
+   * @return FF_Creator
+   */
+  public function set_max_file_size( $size = 0 )
   {
     if ($size && is_integer($size))
       $this->_form_structure['properties']['max_file_size'] = $size;
@@ -283,6 +422,18 @@ class FF_Creator
     return $this;
   }
 
+  /**
+   * Set form properties.
+   * Shorthand method, equivalent to:
+   *    $form->set_action($action)
+   *         ->make_multipart($is_multipart)
+   *         ->set_attributes($attributes);
+   * 
+   * @param null|string $action
+   * @param bool $is_multipart
+   * @param null|array|string $attributes
+   * @return FF_Creator
+   */
   public function set_properties ( $action = NULL, $is_multipart = FALSE, $attributes = NULL )
   {
     $this->set_action($action);
@@ -292,6 +443,14 @@ class FF_Creator
     return $this;
   }
 
+  /**
+   * Begin a field group <fieldset ...><legend>...</legend>
+   * 
+   * @param string $name
+   * @param string $legend
+   * @param array $attributes
+   * @return FF_Creator
+   */
   public function add_group($name = '', $legend = '', $attributes = array())
   {
     if (!empty($name)) {
@@ -317,6 +476,11 @@ class FF_Creator
     return $this;
   }
 
+  /**
+   * Close a field group </fieldset>
+   * 
+   * @return FF_Creator
+   */
   public function close_group ( )
   {
     // set current group to FALSE so fields are automatically attached to form container.
@@ -429,8 +593,12 @@ class FF_Creator
 
   }
 
+  
+  // -------------------------------------------------------------
   // Basic field types definition
-	
+  // -------------------------------------------------------------
+  
+  	
   /**
    * Add a hidden field.  <input type="hidden" ...>
    * 
