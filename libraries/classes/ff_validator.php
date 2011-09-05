@@ -343,14 +343,15 @@ class FF_Validator extends CI_form_validation
 	
   /**
    * Match a basic regex pattern.
-   * Delimiters not needed, but / or # delims are handled
+   * Delimiters not needed, but / or # delims are accepted
    * Supports only the caseless modifier flag 'i'
    * 
    * @param $str
    * @param $pattern
    * @return bool
    */
-  function match_regex($str, $pattern) {
+  function regex_match($str, $pattern) 
+  {	  
 	//remove leading/trailing whitespace
 	$pattern = trim($pattern);
 	  
@@ -361,14 +362,32 @@ class FF_Validator extends CI_form_validation
 	    $i = 'i';
 	    $pattern = rtrim($pattern,'i');
     }
-    
-    //remove '/' or '#' that might have been included as pattern delims
-    //and assemble the final pattern
+
+	//remove '/' or '#' that might have been included as pattern delims
+	//and assemble the final pattern
     $pattern = '/^' . trim($pattern,'/#') . '$/'.$i;
-	
+	  
 	//do the match
     if (preg_match($pattern, $str)) return TRUE;
     return FALSE;
+  }
+
+  /**
+   * Basic rule to determine if a string is a valid url.
+   * This covers 95% of URLs, but some arcane URLs will come up false.
+   * Use regex_match with a longer regex, such as Gruber v2, for more exhaustive coverage.
+   * @link http://daringfireball.net/2010/07/improved_regex_for_matching_urls
+   * 
+   * @param string $str
+   * @return bool
+   */
+  function valid_url($str)
+  {
+	//simple url regex
+	$ptn = '([\<]?)((http(?:s)?\:\/\/)?[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*\.[a-zA-Z]{2,6}(?:\/?|(?:\/[\w\-]+)*)'
+	       .'(?:\/?|\/\w+\.[a-zA-Z]{2,4}(?:\?[\w]+\=[\w\-]+)?)?(?:\&[\w]+\=[\w\-]?(\&)*)*)([\>]?)';  
+    
+	return $this->regex_match($str, $ptn);
   }
 }
 // --------------------------------------------------------------------

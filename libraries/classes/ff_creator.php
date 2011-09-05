@@ -989,9 +989,6 @@ class FF_Creator
    * Add text input with type="url" and "url" added to class value.
    * Last argument $required can be a boolean for automatic rules, 
    * or a Form_Validation rule string may be supplied.
-   * Note that the automatic URL validation is quite basic!  Supply your own rules
-   * if you require something more exhaustive.  Use the match_regex[] rule included
-   * with Fluentform.  
    * 
    * @param string $name
    * @param string $label
@@ -1004,13 +1001,9 @@ class FF_Creator
   {
     // add url class and set type = "url"
     $attributes = array_merge( $this->_process_attributes($attributes, array( 'url' )), array( 'type' => 'url' ) );
-	  
-	//simple url regex
-	$ptn = '([\<]?)((http(?:s)?\:\/\/)?[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*\.[a-zA-Z]{2,6}(?:\/?|(?:\/[\w\-]+)*)'
-	       .'(?:\/?|\/\w+\.[a-zA-Z]{2,4}(?:\?[\w]+\=[\w\-]+)?)?(?:\&[\w]+\=[\w\-]?(\&)*)*)([\>]?)';  
-    
+	
     // set optimal rules for url validation, or allow manual rules
-    $rules = is_bool($required) ? 'trim|' . ($required ? 'required|' : '') . 'match_regex['.$ptn.']|prep_url|xss_clean' 
+    $rules = is_bool($required) ? 'trim|' . ($required ? 'required|' : '') . 'valid_url|prep_url|xss_clean' 
 		                        : $required;
 
     return $this->add_text_field( $name, $label, $value, $attributes, $rules );
