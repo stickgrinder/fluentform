@@ -343,8 +343,9 @@ class FF_Validator extends CI_form_validation
 	
   /**
    * Match a basic regex pattern.
-   * Delimiters not needed, but / or # delims are accepted
-   * Supports only the caseless modifier flag 'i'
+   * Delimiters optional; only # or / supported as delimiters.
+   * Supports only the caseless modifier flag 'i', 
+   * but in that case the delimiters are required.
    * 
    * @param $str
    * @param $pattern
@@ -357,7 +358,7 @@ class FF_Validator extends CI_form_validation
 	  
 	//check for case-insensitive flag.  Other flags not supported in this method.
 	$i = '';
-    if(substr($pattern, -1)=='i')
+    if(in_array($pattern{0},array('/','#')) AND substr($pattern, -2)=='i')
     {
 	    $i = 'i';
 	    $pattern = rtrim($pattern,'i');
