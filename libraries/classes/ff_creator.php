@@ -700,11 +700,13 @@ class FF_Creator
    * @param string $label
    * @param string $value
    * @param array $attributes
-   * @param string $rules
+   * @param string $required
    * @return FF_Creator
    */
-  public function add_password_field ( $name = '', $label = '', $value = '', $attributes=array(), $rules='' )
+  public function add_password_field ( $name = '', $label = '', $value = '', $attributes = array(), $required = true )
   {
+	$rules = is_bool($required) ? 'trim|' . ($required ? 'required|' : '') . 'min_length[6]' : $required;
+	
     return $this->_add_field( array(
       'type' => 'password',
       'name' => $name,
