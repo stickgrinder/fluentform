@@ -1,7 +1,7 @@
-# Info file for Formbuilder 2.x Spark by @stickgrinder (Paolo Pustorino)
+# Info file for FluentForm 2.x Spark by @stickgrinder (Paolo Pustorino)
 # This Spark is sponsored by Agavee (http://www.agavee.com)
 
 name: FluentForm
-version: 2.0.0
+version: 2.0.1
 compatibility: 2.0.2
 tags: ["form", "formbuilder", "factory", "validation", "fluentform"]

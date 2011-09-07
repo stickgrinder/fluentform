@@ -18,9 +18,9 @@ Create a controller named at your wish, and add the following code to it:
       ->add_email_field('email', 'E-Mail', 'example@example.com', array(), TRUE)
     ->add_group('profile', 'Profile')
       ->add_text_field('name', 'Name')
-      ->add_checkbox('happy', 'I am happy', FB_R_CRB_LABEL_AFTER, TRUE, array('class'=>array('check', 'happy'), 'id'=>'mycheck'))
+      ->add_checkbox('happy', 'I am happy', FF_R_CRB_LABEL_AFTER, TRUE, array('class'=>array('check', 'happy'), 'id'=>'mycheck'))
     ->close_group()
-    ->add_checkboxes('hero', 'My favorite comic hero:', FB_R_CRB_LABEL_AFTER, array(
+    ->add_checkboxes('hero', 'My favorite comic hero:', FF_R_CRB_LABEL_AFTER, array(
       array (
         'label' => 'Superman',
         'value' => 'superman',
