@@ -54,6 +54,11 @@ class fluentform {
 
   }
 
+  /**
+   * @param string $validator_class
+   * @param string $renderer_class
+   * @return FF_Creator
+   */
   public function new_form($validator_class = 'FF_Validator', $renderer_class = 'FF_Renderer')
   {
 
