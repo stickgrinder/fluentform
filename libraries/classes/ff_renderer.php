@@ -301,10 +301,21 @@ class FF_Renderer
     }
 
     // ok, now let's see if we could render this stuff!
-    $rendering_method = '_render_'.$field['type'].'_field';
+    switch($field['type'])
+    {
+	  case 'number':
+	  case 'email':
+	  case 'url':
+	  case 'integer':
+	  case 'text':
+	    $rendering_method = '_render_text_field';
+		break;
+	  default:
+		$rendering_method = '_render_'.$field['type'].'_field';
+    }
+	  
     if (method_exists($this, $rendering_method))
     {
-
       // prepare array for wrapper classes (maybe it won't be used...)
       $more_classes = array();
 
@@ -538,10 +549,11 @@ class FF_Renderer
     extract($field);
     $output[10] = form_label($label, $attributes['id']);
 
-    $output[20] = form_input(
+    $output[20] = fluentform_form_input(
       $name,
       $this->set_value($name, $value),
-      $this->_stringify_attributes($attributes)
+      $this->_stringify_attributes($attributes),
+	  $type
     );
 
     if ( $this->_config['error_show'] === FF_R_ERROR_SHOW_FIELD )
