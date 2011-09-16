@@ -7,7 +7,16 @@ class FF_Validator extends CI_form_validation
   private $_holder;
   private $_config; // configuration options (from config file, "validator" key)
 
-
+  /**
+   * Class constructor
+   *
+   * Gets initialization parameters for configuration and holder object
+   *
+   * @access public
+   * @param array $config an array of configuration parameters
+   * @param FF_Creator $holder the object which holds created instance
+   * @return null
+   */
   public function __construct( $config = array(), FF_Creator $holder = NULL )
   {
     parent::__construct();
@@ -29,7 +38,7 @@ class FF_Validator extends CI_form_validation
    *
    * Parameter is taken from the form structure
    *
-   * @access  private  //TODO: shouldn't it be "public"?
+   * @access public
    * @param array
    * @return null
    */
@@ -43,7 +52,16 @@ class FF_Validator extends CI_form_validation
     return $this;
   }
 
-  private function _set_rules_from_items_list($items = FALSE)
+  /**
+   * Given an item list (form, section or fieldset) set rules recursively
+   *
+   * Parameter is taken from the form structure
+   *
+   * @access private
+   * @param array $items an item holder (form, fieldset or form section)
+   * @return FF_Validator
+   */
+ private function _set_rules_from_items_list($items = FALSE)
   {
 
     // is there something in this form at all?
@@ -68,6 +86,16 @@ class FF_Validator extends CI_form_validation
 
   }
 
+  /**
+   * Given an item set rules for it
+   *
+   * Parameter is provided by _set_rules_from_items_list
+   *
+   * @access private
+   * @param array $item a form item
+   * @return FF_Validator
+   * @see _set_rules_from_items_list
+   */
   private function _set_rules_for_item($item = FALSE)
   {
 
@@ -89,7 +117,6 @@ class FF_Validator extends CI_form_validation
     }
 
     return $this;
-
   }
 
   /**
