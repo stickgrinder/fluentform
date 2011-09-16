@@ -23,6 +23,18 @@ class fluentform {
       'fluentform_validator' => array(
         'error_delimiter_tag' => 'div',
         'error_delimiter_classes' => 'errors',
+        'default_rules' => array(
+          'text' => '',
+          'file' => '',
+          'textarea' => '',
+          'password' => '',
+          'dropdown' => '',
+          'multiselect' => '',
+          'checkbox' => '',
+          'checkboxes' => '',
+          'radiobutton' => '',
+          'radiobuttons' => '',
+        ),
       ),
       'fluentform_renderer' => array(
         'field_wrapper_tag' => 'div',
