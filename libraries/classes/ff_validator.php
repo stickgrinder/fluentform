@@ -3,7 +3,7 @@
 class FF_Validator extends CI_form_validation
 {
 
-  //private $_form_structure;
+  private $_form_structure;
   private $_holder;
   private $_config; // configuration options (from config file, "validator" key)
 
@@ -20,7 +20,7 @@ class FF_Validator extends CI_form_validation
     $this->set_error_delimiters(
       '<'.$this->_config['error_delimiter_tag'].' class="'.$this->_config['error_delimiter_classes'].'">',
       $this->_wrapper_close = '</'.$this->_config['error_delimiter_tag'].'>'
-    );
+    ); // TODO: understand why the hell I wrote this crap! O_o
 
   }
 
@@ -29,7 +29,7 @@ class FF_Validator extends CI_form_validation
    *
    * Parameter is taken from the form structure
    *
-   * @access  private
+   * @access  private  //TODO: shouldn't it be "public"?
    * @param array
    * @return null
    */
@@ -73,6 +73,12 @@ class FF_Validator extends CI_form_validation
 
     if (is_array($item) && count($item > 0))
     {
+      
+      // if no rule is set, try to fetch default ones
+      if ( !isset( $item['rules'] ) || empty( $item['rules'] ) )
+        if ( isset( $this->_config['default_rules'][$item['type']] ) )
+          $item['rules'] = $this->_config['default_rules'][$item['type']];
+      
       // if item description makes sense, set the rules for that item
       if (
         ( isset( $item['name'] ) && ! empty( $item['name'] ) ) &&

@@ -397,6 +397,11 @@ class FF_Renderer
   private function _render_checkbox_field($field)
   {
     extract($field);
+    
+    // check if there is the need to load label position defaults
+    if (NULL === $label_position)
+      if ( isset($this->_config['crb_default_label_position']) && ! empty($this->_config['crb_default_label_position']) )
+        $label_position = $this->_config['crb_default_label_position'];
 
     if ($label_position !== FF_R_CRB_LABEL_NONE)
       $output[$label_position] = form_label($label, $attributes['id']);
@@ -450,6 +455,11 @@ class FF_Renderer
   private function _render_radiobutton_field($field)
   {
     extract($field);
+    
+    // check if there is the need to load label position defaults
+    if (NULL === $label_position)
+      if ( isset($this->_config['crb_default_label_position']) && ! empty($this->_config['crb_default_label_position']) )
+        $label_position = $this->_config['crb_default_label_position'];
 
     if ($label_position !== FF_R_CRB_LABEL_NONE)
       $output[$label_position] = form_label($label, $attributes['id']);
@@ -642,8 +652,6 @@ class FF_Renderer
     return implode('', $output);
 
   }
-
-
 
 }
 // --------------------------------------------------------------------
