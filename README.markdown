@@ -10,34 +10,35 @@ Create a controller named at your wish, and add the following code to it:
 
     $form = $this->fluentform->new_form();
 
-    $form->set_action('page/home')
+    $myform->set_action('home')
     ->add_file_field('image','Upload image')
-    ->add_group('account', 'Account')
-      ->add_text_field('username', 'Username', '', 'class="username red" id="username"', 'trim|required|min_length[5]|xss_clean')
-      ->add_password_field('password', 'Password', '', 'id="password"', 'trim|min_length[5]|xss_clean')
-      ->add_email_field('email', 'E-Mail', 'example@example.com', array(), TRUE)
-    ->add_group('profile', 'Profile')
-      ->add_text_field('name', 'Name')
-      ->add_checkbox('happy', 'I am happy', FF_R_CRB_LABEL_AFTER, TRUE, array('class'=>array('check', 'happy'), 'id'=>'mycheck'))
+    ->add_group('account')
+      ->add_text_field('username', 'Choose a username', 'trim|required|minlength[5]|xss_clean')
+      ->add_password_field('password', 'and a password')
+      ->add_email_field('email') // omit the label to have it set automagically from field name
+    ->add_group('profile')
+      ->add_text_field('name')
+      ->add_checkbox('happy', 'I am happy', '', 'yes', TRUE, array('class'=>array('check', 'happy'), 'id'=>'mycheck'))
     ->close_group()
-    ->add_checkboxes('hero', 'My favorite comic hero:', FF_R_CRB_LABEL_AFTER, array(
+    ->add_checkboxes('foos', 'Foos list', array(
       array (
-        'label' => 'Superman',
-        'value' => 'superman',
-        'checked' => FALSE,
+        'label' => 'Foo 1',
+        'value' => '1',
+        'checked' => TRUE,
       ),
       array (
-        'label' => 'Goofy',
-        'value' => 'goofy',
-        'checked' => FALSE,
+        'label' => 'Foo 2',
+        'value' => '2',
+        'checked' => TRUE,
       ),
       array (
-        'label' => 'Conan the Barbarian',
-        'value' => 'conan',
+        'label' => 'Foo 3',
+        'value' => '3',
         'checked' => FALSE,
       )))
     ->add_submit('submit', 'Save')
-    ->add_reset('reset', 'Cancel');
+    ->add_reset('reset')
+    ->add_button('mybutton', 'Do nothing...');
 
     if (!$form->validate())
     {
