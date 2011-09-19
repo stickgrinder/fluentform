@@ -39,6 +39,11 @@ class FF_Renderer
 
     return $attributes_string;
   }
+  
+  private function _create_label_from_name($name) {
+    // convert underscore to spaces, then capitalize first character
+    return ucfirst(str_replace('_', ' ', $name));
+  }
 
   // error related helpers are useless since they rely on CI_form_validation
   // following functions are rewritten versions for these ones.
@@ -282,7 +287,7 @@ class FF_Renderer
 
   public function render_field($field_name, $wrapped = TRUE)
   {
-
+    
     // find field definition and check if renderer is able to render
     // the field
 
@@ -299,6 +304,14 @@ class FF_Renderer
     } else {
       $field = $this->_form_structure['items'][$field_name];
     }
+    
+    // check if label is set explicitely; if not forge one from field name
+    if (strlen($field['label']) <= 0)
+      $field['label'] = $this->__create_label_from_name($field['name']);
+      
+    // check if label position is set explicitely; if not, use defaults
+    if (NULL === $field['label_position'])
+      $field['label_position'] = $this->config['crb_default_label_position'];
 
     // ok, now let's see if we could render this stuff!
     switch($field['type'])

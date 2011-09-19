@@ -28,8 +28,8 @@ class FF_Validator extends CI_form_validation
 
     $this->set_error_delimiters(
       '<'.$this->_config['error_delimiter_tag'].' class="'.$this->_config['error_delimiter_classes'].'">',
-      $this->_wrapper_close = '</'.$this->_config['error_delimiter_tag'].'>'
-    ); // TODO: understand why the hell I wrote this crap! O_o
+      '</'.$this->_config['error_delimiter_tag'].'>'
+    );
 
   }
 
