@@ -788,7 +788,7 @@ class FF_Creator
    * @param string $rules
    * @return FF_Creator
    */
-  public function add_checkbox ( $name = '', $label = '', $rules='', $label_position = NULL, $value = '', $checked = FALSE, $attributes=array() )
+  public function add_checkbox ( $name = '', $label = '', $value = '', $rules='', $checked = FALSE, $attributes=array(), $label_position = NULL )
   {
     return $this->_add_field( array(
       'type' => 'checkbox',
@@ -813,7 +813,7 @@ class FF_Creator
    * @param string $rules
    * @return FF_Creator
    */
-  public function add_checkboxes ( $name = '', $label = '', $options = array(), $rules='', $label_position = NULL, $attributes=array() )
+  public function add_checkboxes ( $name = '', $label = '', $options = array(), $rules='', $attributes=array(), $label_position = NULL )
   {
 
     // In case of multiselect, an array must be sent by the form. Search for [] symbols
@@ -845,7 +845,7 @@ class FF_Creator
    * @param string $rules
    * @return FF_Creator
    */
-  public function add_radiobutton ( $name = '', $label = '', $rules='', $label_position = NULL, $value = '', $selected = FALSE, $attributes=array() )
+  public function add_radiobutton ( $name = '', $label = '', $value = '', $rules='', $checked = FALSE, $attributes=array(), $label_position = NULL )
   {
     return $this->_add_field( array(
       'type' => 'radiobutton',
@@ -871,7 +871,7 @@ class FF_Creator
    * @param string $rules
    * @return FF_Creator
    */
-  public function add_radiobuttons ( $name = '', $label = '', $options = array(), $rules='', $label_position = NULL, $value = '', $attributes=array(), $rules='xss_clean' )
+  public function add_radiobuttons ( $name = '', $label = '', $options = array(), $rules='', $attributes=array(), $label_position = NULL )
   {
 
     // In case of multiselect, an array must be sent by the form. Search for [] symbols

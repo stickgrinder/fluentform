@@ -13,12 +13,12 @@ Create a controller named at your wish, and add the following code to it:
     $myform->set_action('home')
     ->add_file_field('image','Upload image')
     ->add_group('account')
-      ->add_text_field('username', 'Choose a username', 'trim|required|minlength[5]|xss_clean')
-      ->add_password_field('password', 'and a password')
-      ->add_email_field('email') // omit the label to have it set automagically from field name
-    ->add_group('profile')
-      ->add_text_field('name')
-      ->add_checkbox('happy', 'I am happy', '', 'yes', TRUE, array('class'=>array('check', 'happy'), 'id'=>'mycheck'))
+      ->add_text_field('username', 'Username', 'trim|required|minlength[5]|xss_clean')
+      ->add_password_field('password')
+      ->add_email_field('email')
+    ->add_group('profile', 'Your Profile')
+      ->add_text_field('name', 'First Name')
+      ->add_checkbox('happy', 'I am happy', 'yes', '', TRUE, array('class'=>'check happy', 'id'=>'mycheck'))
     ->close_group()
     ->add_checkboxes('foos', 'Foos list', array(
       array (

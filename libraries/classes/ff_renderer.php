@@ -317,8 +317,10 @@ class FF_Renderer
       
       
     // check if label position is set explicitely; if not, use defaults
-    if (isset($field['label_position']) && NULL === $field['label_position'])
-      $field['label_position'] = $this->config['crb_default_label_position'];
+    if (isset($field['label_position']) /*&& NULL === $field['label_position']*/) {
+     // $field['label_position'] = $this->config['crb_default_label_position'];
+      echo "Trovato: ". $field['label_position'];
+    }
 
     // ok, now let's see if we could render this stuff!
     switch($field['type'])
