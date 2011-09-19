@@ -215,9 +215,9 @@ class FF_Renderer
 
     foreach ($this->_form_structure['items'] as $name => $item)
     {
-      // is this item a group?
-      if (substr($name, -6, 6) === '_group')
-        $output[20] .= $this->render_group(substr($name, 0, -6));
+      // is this item a fieldset?
+      if (substr($name, -9, 9) === '_fieldset')
+        $output[20] .= $this->render_fieldset(substr($name, 0, -9));
       else
         $output[20] .= $this->render_field($name);
     }
@@ -262,26 +262,27 @@ class FF_Renderer
     return form_close();
   }
 
-  public function render_group($group_name = FALSE, $wrapped = TRUE)
+  public function render_fieldset($fieldset_name = FALSE, $wrapped = TRUE)
   {
 
-    if (! $group_name || ! isset($this->_form_structure['items'][$group_name.'_group'])) return FALSE;
+    if (! $fieldset_name || ! isset($this->_form_structure['items'][$fieldset_name.'_fieldset'])) return FALSE;
 
-    $group = $this->_form_structure['items'][$group_name.'_group'];
+    $fieldset = $this->_form_structure['items'][$fieldset_name.'_fieldset'];
 
-    // add group name to attributes while rendering
-    $group['attributes']['class'] .= ' '.$group['name'];
-    if (empty($group['attributes']['id'])) $group['attributes']['id'] = $group['name'];
+    // add fieldset name to attributes while rendering
+    $fieldset['attributes']['class'] .= ' '.$fieldset['name'];
+    if (empty($fieldset['attributes']['id'])) $fieldset['attributes']['id'] = $fieldset['name'];
     
-    // check if legend is set explicitely; if not forge one from group name
-    if (strlen($group['legend']) <= 0)
-      $group['legend'] = $this->_create_label_from_name($group['name']);
+    // check if legend is set explicitely; if not forge one from fieldset name
+    // to do so, we have to strip "_fieldset" from fieldset name
+    if (strlen($fieldset['legend']) <= 0)
+      $fieldset['legend'] = $this->_create_label_from_name(substr($fieldset['name'], 0, -9));
 
-    $output = form_fieldset($group['legend'], $group['attributes']);
+    $output = form_fieldset($fieldset['legend'], $fieldset['attributes']);
 
-    foreach($this->_form_structure['items'][$group_name.'_group']['items'] as $field_name => $field)
+    foreach($this->_form_structure['items'][$fieldset_name.'_fieldset']['items'] as $field_name => $field)
     {
-      $output .= $this->render_field($group_name.'/'.$field_name, $wrapped);
+      $output .= $this->render_field($fieldset_name.'/'.$field_name, $wrapped);
     }
 
     $output .= form_fieldset_close();
@@ -295,16 +296,16 @@ class FF_Renderer
     // find field definition and check if renderer is able to render
     // the field
 
-    // first of all, is the field inside any group?
+    // first of all, is the field inside any fieldset?
     if (strpos($field_name, '/'))
     {
       $steps = explode('/', $field_name);
-      $group_name = $steps[0];
+      $fieldset_name = $steps[0];
       $field_name = $steps[1];
     }
 
-    if (!empty($group_name)) {
-      $field = $this->_form_structure['items'][$group_name.'_group']['items'][$field_name];
+    if (!empty($fieldset_name)) {
+      $field = $this->_form_structure['items'][$fieldset_name.'_fieldset']['items'][$field_name];
     } else {
       $field = $this->_form_structure['items'][$field_name];
     }

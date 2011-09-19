@@ -10,8 +10,8 @@ class FF_Creator
 
   private $_config; // configuration options (from config file, "creator" key)
 
-  private $_last_group; // hold last group and field information; useful to implement fluent interface
-  private $_last_field; // NOTE: you could explicitly close last opened group using close_group() method
+  private $_last_fieldset; // hold last fieldset and field information; useful to implement fluent interface
+  private $_last_field; // NOTE: you could explicitly close last opened fieldset using close_fieldset() method
   private $_unique_ids_registry;
 
   // -------------------------------------------------------------
@@ -37,7 +37,7 @@ class FF_Creator
     $this->set_attributes(array());
     $this->set_max_file_size(0); // 0 for no limit
 
-    $this->_last_group = FALSE;
+    $this->_last_fieldset = FALSE;
     $this->_last_field = FALSE;
     $this->_unique_ids_registry = array();
   }
@@ -114,24 +114,24 @@ class FF_Creator
   }
 
   /**
-   * Return an array of the field groups
+   * Return an array of the field fieldsets
    * 
    * @return array
    */
-  public function get_groups() 
+  public function get_fieldsets() 
   {
-    $groups = array();
+    $fieldsets = array();
     $items = $this->_form_structure['items'];
 
     foreach ($items as $item_name => $item) 
     {
-      if ($item['type'] === 'group') 
+      if ($item['type'] === 'fieldset') 
       {
-        $groups[$item_name] = $item;
+        $fieldsets[$item_name] = $item;
       }
     }
 
-    return $groups;
+    return $fieldsets;
   }
 
   /**
@@ -217,16 +217,16 @@ class FF_Creator
   }
 
   /**
-   * Render a single field group <fieldset>...</fieldset>
+   * Render a single fieldset <fieldset>...</fieldset>
    * Returns false if renderer is not set.
    * 
-   * @param bool $group_name
+   * @param bool $fieldset_name
    * @return string|false
    */
-  public function render_group( $group_name = FALSE )
+  public function render_fieldset( $fieldset_name = FALSE )
   {
 
-    if (!$group_name) return FALSE;
+    if (!$fieldset_name) return FALSE;
 
     // is renderer already set and is it capable of getting job done?
     if (is_object($this->_renderer))
@@ -234,7 +234,7 @@ class FF_Creator
 
       // tell it about our form and ask for some lovely tags
       $this->_renderer->set_form_structure($this->_form_structure);
-      return $this->_renderer->render_group($group_name);
+      return $this->_renderer->render_fieldset($fieldset_name);
 
     }
 
@@ -444,32 +444,32 @@ class FF_Creator
   }
 
   /**
-   * Begin a field group <fieldset ...><legend>...</legend>
+   * Begin a fieldset <fieldset ...><legend>...</legend>
    * 
    * @param string $name
    * @param string $legend
    * @param array $attributes
    * @return FF_Creator
    */
-  public function add_group($name = '', $legend = '', $attributes = array())
+  public function add_fieldset($name = '', $legend = '', $attributes = array())
   {
     if (!empty($name)) {
 
-      // allow a group and a field to have same name, since they are different in nature
-      $name .= '_group';
+      // allow a fieldset and a field to have same name, since they are different in nature
+      $name .= '_fieldset';
 
       // add a key to the form
       $this->_form_structure['items'][$name] = array(
-        'type' => 'group',
+        'type' => 'fieldset',
         'name' => $name,
         'legend' => $legend,
-        'attributes' => $this->_process_attributes($attributes, array('field-group')),
+        'attributes' => $this->_process_attributes($attributes, array('fieldset')),
         'items' => array(),
       );
 
-      // set current group so that fields will be added to this one until
-      // a new one is created or group_close() is called.
-      $this->_last_group = $name;
+      // set current fieldset so that fields will be added to this one until
+      // a new one is created or fieldset_close() is called.
+      $this->_last_fieldset = $name;
 
     }
 
@@ -477,14 +477,14 @@ class FF_Creator
   }
 
   /**
-   * Close a field group </fieldset>
+   * Close a fieldset </fieldset>
    * 
    * @return FF_Creator
    */
-  public function close_group ( )
+  public function close_fieldset ( )
   {
-    // set current group to FALSE so fields are automatically attached to form container.
-    $this->_last_group = FALSE;
+    // set current fieldset to FALSE so fields are automatically attached to form container.
+    $this->_last_fieldset = FALSE;
 
     return $this;
   }
@@ -525,10 +525,10 @@ class FF_Creator
     unset($attributes);
 
 
-    // if we have an open group, let's add field to that
-    if ( $this->_last_group != FALSE && !empty($this->_last_group) )
+    // if we have an open fieldset, let's add field to that
+    if ( $this->_last_fieldset != FALSE && !empty($this->_last_fieldset) )
     {
-      $this->_form_structure['items'][$this->_last_group]['items'][$name] = $field;
+      $this->_form_structure['items'][$this->_last_fieldset]['items'][$name] = $field;
     }
     else
     {
