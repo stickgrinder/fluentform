@@ -272,6 +272,10 @@ class FF_Renderer
     // add group name to attributes while rendering
     $group['attributes']['class'] .= ' '.$group['name'];
     if (empty($group['attributes']['id'])) $group['attributes']['id'] = $group['name'];
+    
+    // check if legend is set explicitely; if not forge one from group name
+    if (strlen($group['legend']) <= 0)
+      $group['legend'] = $this->_create_label_from_name($group['name']);
 
     $output = form_fieldset($group['legend'], $group['attributes']);
 
@@ -305,12 +309,15 @@ class FF_Renderer
       $field = $this->_form_structure['items'][$field_name];
     }
     
-    // check if label is set explicitely; if not forge one from field name
-    if (strlen($field['label']) <= 0)
-      $field['label'] = $this->__create_label_from_name($field['name']);
+    // check if label (or button value) is set explicitely; if not forge one from field name
+    if (in_array($field['type'], array('button', 'reset', 'submit')) && empty($field['value']))
+      $field['value'] = $this->_create_label_from_name($field['name']);
+    else if (empty($field['label']))
+      $field['label'] = $this->_create_label_from_name($field['name']);
+      
       
     // check if label position is set explicitely; if not, use defaults
-    if (NULL === $field['label_position'])
+    if (isset($field['label_position']) && NULL === $field['label_position'])
       $field['label_position'] = $this->config['crb_default_label_position'];
 
     // ok, now let's see if we could render this stuff!
