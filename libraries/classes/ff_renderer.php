@@ -39,7 +39,7 @@ class FF_Renderer
 
     return $attributes_string;
   }
-  
+
   private function _create_label_from_name($name) {
     // convert underscore to spaces, then capitalize first character
     return ucfirst(str_replace('_', ' ', $name));
@@ -272,7 +272,7 @@ class FF_Renderer
     // add fieldset name to attributes while rendering
     $fieldset['attributes']['class'] .= ' '.$fieldset['name'];
     if (empty($fieldset['attributes']['id'])) $fieldset['attributes']['id'] = $fieldset['name'];
-    
+
     // check if legend is set explicitely; if not forge one from fieldset name
     // to do so, we have to strip "_fieldset" from fieldset name
     if (strlen($fieldset['legend']) <= 0)
@@ -292,7 +292,7 @@ class FF_Renderer
 
   public function render_field($field_name, $wrapped = TRUE)
   {
-    
+
     // find field definition and check if renderer is able to render
     // the field
 
@@ -309,18 +309,17 @@ class FF_Renderer
     } else {
       $field = $this->_form_structure['items'][$field_name];
     }
-    
+
     // check if label (or button value) is set explicitely; if not forge one from field name
     if (in_array($field['type'], array('button', 'reset', 'submit')) && empty($field['value']))
       $field['value'] = $this->_create_label_from_name($field['name']);
     else if (empty($field['label']))
       $field['label'] = $this->_create_label_from_name($field['name']);
-      
-      
+
+
     // check if label position is set explicitely; if not, use defaults
     if (isset($field['label_position']) /*&& NULL === $field['label_position']*/) {
-     // $field['label_position'] = $this->config['crb_default_label_position'];
-      echo "Trovato: ". $field['label_position'];
+      $field['label_position'] = $this->_config['crb_default_label_position'];
     }
 
     // ok, now let's see if we could render this stuff!
@@ -336,7 +335,7 @@ class FF_Renderer
 	  default:
 		$rendering_method = '_render_'.$field['type'].'_field';
     }
-	  
+
     if (method_exists($this, $rendering_method))
     {
       // prepare array for wrapper classes (maybe it won't be used...)
@@ -420,7 +419,7 @@ class FF_Renderer
   private function _render_checkbox_field($field)
   {
     extract($field);
-    
+
     // check if there is the need to load label position defaults
     if (NULL === $label_position)
       if ( isset($this->_config['crb_default_label_position']) && ! empty($this->_config['crb_default_label_position']) )
@@ -478,7 +477,7 @@ class FF_Renderer
   private function _render_radiobutton_field($field)
   {
     extract($field);
-    
+
     // check if there is the need to load label position defaults
     if (NULL === $label_position)
       if ( isset($this->_config['crb_default_label_position']) && ! empty($this->_config['crb_default_label_position']) )
