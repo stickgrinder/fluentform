@@ -619,7 +619,7 @@ class FF_Renderer
 
     $output[20] = form_password(
       $name,
-      $this->set_value($name, $value),
+      ($this->_config['fill_password_value']) ? $this->set_value($name, $value) : '',
       $this->_stringify_attributes($attributes)
     );
 
