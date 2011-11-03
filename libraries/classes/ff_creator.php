@@ -17,10 +17,10 @@ class FF_Creator
   // -------------------------------------------------------------
   // Magic Methods
   // -------------------------------------------------------------
-	
+
   /**
    * Constructor. Initializes some defaults for form structure.
-   * 
+   *
    * @param array $config
    */
   public function __construct( $config = array() )
@@ -44,7 +44,7 @@ class FF_Creator
 
   /**
    * __toString() renders the form.
-   * 
+   *
    * @see FF_Creator::render_form()
    * @return false|string
    */
@@ -61,7 +61,7 @@ class FF_Creator
 
   /**
    * Set (compose) the renderer object
-   * 
+   *
    * @param FF_Renderer $_renderer
    * @return FF_Creator
    */
@@ -73,7 +73,7 @@ class FF_Creator
 
   /**
    * Get the FluentForm renderer object.
-   * 
+   *
    * @return FF_Renderer
    */
   public function get_renderer()
@@ -82,8 +82,8 @@ class FF_Creator
   }
 
   /**
-   * Set (compose) the FluentForm form validation object.  
-   * 
+   * Set (compose) the FluentForm form validation object.
+   *
    * @param FF_validator $_validator
    * @return FF_Creator
    */
@@ -95,8 +95,8 @@ class FF_Creator
 
   /**
    * Return the FluentForm form validation object
-   * 
-   * @return FF_Validator 
+   *
+   * @return FF_Validator
    */
   public function get_validator()
   {
@@ -105,7 +105,7 @@ class FF_Creator
 
   /**
    * Return the entire form structure as an array.
-   * 
+   *
    * @return array
    */
   public function get_form_structure()
@@ -115,17 +115,17 @@ class FF_Creator
 
   /**
    * Return an array of the field fieldsets
-   * 
+   *
    * @return array
    */
-  public function get_fieldsets() 
+  public function get_fieldsets()
   {
     $fieldsets = array();
     $items = $this->_form_structure['items'];
 
-    foreach ($items as $item_name => $item) 
+    foreach ($items as $item_name => $item)
     {
-      if ($item['type'] === 'fieldset') 
+      if ($item['type'] === 'fieldset')
       {
         $fieldsets[$item_name] = $item;
       }
@@ -136,7 +136,7 @@ class FF_Creator
 
   /**
    * Set the form structure from supplied array.
-   * 
+   *
    * @param array $form_structure
    * @return FF_Creator
    */
@@ -151,7 +151,7 @@ class FF_Creator
 
   /**
    * Return the form structure as a string, i.e. var_dump() it.
-   * 
+   *
    * @return string
    */
   public function dump_form_structure()
@@ -161,7 +161,7 @@ class FF_Creator
 
   /**
    * Load the form structure from supplied string.
-   * 
+   *
    * @param string $form_structure
    * @return FF_Creator
    */
@@ -173,7 +173,7 @@ class FF_Creator
   // -------------------------------------------------------------
   // Rendering functions proxies
   // -------------------------------------------------------------
-  	
+
   public function render_raw_field( $field_name = FALSE )
   {
 
@@ -195,7 +195,7 @@ class FF_Creator
   /**
    * Render a single form field.
    * Returns false if renderer is not set.
-   * 
+   *
    * @param bool $field_name
    * @return string|false
    */
@@ -219,7 +219,7 @@ class FF_Creator
   /**
    * Render a single fieldset <fieldset>...</fieldset>
    * Returns false if renderer is not set.
-   * 
+   *
    * @param bool $fieldset_name
    * @return string|false
    */
@@ -245,7 +245,7 @@ class FF_Creator
   /**
    * Render the main form element <form ...>
    * Returns false if renderer is not set
-   * 
+   *
    * @return string|false
    */
   public function render_form_tag()
@@ -268,7 +268,7 @@ class FF_Creator
   /**
    * Close the form. </form>
    * Returns false if renderer is not set.
-   * 
+   *
    * @return string|false
    */
   public function render_form_close()
@@ -291,7 +291,7 @@ class FF_Creator
   /**
    * Return the form html as a string.
    * Returns false if form renderer is not set.
-   * 
+   *
    * @return string|false
    */
   public function render_form()
@@ -313,7 +313,7 @@ class FF_Creator
 
   /**
    * Validator proxy function. i.e. Runs the form validation.
-   * 
+   *
    * @return bool
    */
   public function validate()
@@ -334,7 +334,7 @@ class FF_Creator
 
   /**
    * Check if we have any buttons for the form structure.
-   * 
+   *
    * @return bool
    */
   private function has_buttons ()
@@ -368,8 +368,8 @@ class FF_Creator
   // -------------------------------------------------------------
 
   /**
-   * Set form element enctype property. 
-   * 
+   * Set form element enctype property.
+   *
    * @param bool $is_multipart If true, enctype="multipart/form-data", else property omitted.
    * @return FF_Creator
    */
@@ -382,7 +382,7 @@ class FF_Creator
 
   /**
    * Set the action property of the form html element.
-   * 
+   *
    * @param null $action
    * @return FF_Creator
    * @see FF_Creator::set_properties()
@@ -396,7 +396,7 @@ class FF_Creator
 
   /**
    * Set form attributes, i.e. properties of the form html element.
-   * 
+   *
    * @param null|array $attributes
    * @return FF_Creator
    * @see FF_Creator::set_properties()
@@ -410,7 +410,7 @@ class FF_Creator
 
   /**
    * Set the max_file_size form attribute.
-   * 
+   *
    * @param int $size
    * @return FF_Creator
    */
@@ -428,7 +428,7 @@ class FF_Creator
    *    $form->set_action($action)
    *         ->make_multipart($is_multipart)
    *         ->set_attributes($attributes);
-   * 
+   *
    * @param null|string $action
    * @param bool $is_multipart
    * @param null|array|string $attributes
@@ -445,7 +445,7 @@ class FF_Creator
 
   /**
    * Begin a fieldset <fieldset ...><legend>...</legend>
-   * 
+   *
    * @param string $name
    * @param string $legend
    * @param array $attributes
@@ -478,7 +478,7 @@ class FF_Creator
 
   /**
    * Close a fieldset </fieldset>
-   * 
+   *
    * @return FF_Creator
    */
   public function close_fieldset ( )
@@ -491,7 +491,7 @@ class FF_Creator
 
   /**
    * Generic field setter (it always knows it has to set _last_field)
-   * 
+   *
    * @param $field
    * @return FF_Creator
    */
@@ -542,7 +542,7 @@ class FF_Creator
 
   /**
    * Understand how attributes have been passed and reconstruct them a better way
-   * 
+   *
    * @param $attributes
    * @param bool $additional_classes
    * @return array
@@ -593,15 +593,15 @@ class FF_Creator
 
   }
 
-  
+
   // -------------------------------------------------------------
   // Basic field types definition
   // -------------------------------------------------------------
-  
-  	
+
+
   /**
    * Add a hidden field.  <input type="hidden" ...>
-   * 
+   *
    * @param string $name
    * @param string $value
    * @return FF_Creator
@@ -617,7 +617,7 @@ class FF_Creator
 
   /**
    * Add a simple text field. <input type="text" ...>
-   * 
+   *
    * @param string $name
    * @param string $label
    * @param string $value
@@ -633,8 +633,8 @@ class FF_Creator
 	{
 	  $type = $attributes['type'];
 	  unset($attributes['type']);
-	}	
-	
+	}
+
     return $this->_add_field( array(
 	  //allow input type to be set, default to type="text"
       'type' => $type,
@@ -648,7 +648,7 @@ class FF_Creator
 
   /**
    * Add a single file upload field. <input type="file" ...>
-   * 
+   *
    * @param string $name
    * @param string $label
    * @param string $value
@@ -673,7 +673,7 @@ class FF_Creator
 
   /**
    * Add a textarea field i.e. <textarea...></textarea>
-   * 
+   *
    * @param string $name
    * @param string $label
    * @param string $value
@@ -695,7 +695,7 @@ class FF_Creator
 
   /**
    * Add a password field, i.e. <input type="password" ...>
-   * 
+   *
    * @param string $name
    * @param string $label
    * @param string $value
@@ -704,7 +704,7 @@ class FF_Creator
    * @return FF_Creator
    */
   public function add_password_field ( $name = '', $label = '', $rules='', $value = '', $attributes = array() )
-  {	
+  {
     return $this->_add_field( array(
       'type' => 'password',
       'name' => $name,
@@ -717,7 +717,7 @@ class FF_Creator
 
   /**
    * Add a regular dropdown. i.e. <input type="select" ...>
-   * 
+   *
    * @param string $name
    * @param string $label
    * @param array $options
@@ -747,7 +747,7 @@ class FF_Creator
 
   /**
    * Add a multiselect dropdown
-   * 
+   *
    * @param string $name
    * @param string $label
    * @param array $options
@@ -778,7 +778,7 @@ class FF_Creator
 
   /**
    * Add a single checkbox.
-   * 
+   *
    * @param string $name
    * @param string $label
    * @param int $label_position
@@ -804,7 +804,7 @@ class FF_Creator
 
   /**
    * Add a group of checkboxes.
-   * 
+   *
    * @param string $name
    * @param string $label
    * @param int $label_position
@@ -835,7 +835,7 @@ class FF_Creator
 
   /**
    * Add a single radio button.
-   * 
+   *
    * @param string $name
    * @param string $label
    * @param int $label_position
@@ -853,7 +853,7 @@ class FF_Creator
       'label' => $label,
       'label_position' => $label_position,
       'value' => $value,
-      'selected' => $selected,
+      'checked' => $checked,
       'attributes' => $this->_process_attributes($attributes, array('radiobutton', 'field')),
       'rules' => $rules,
     ));
@@ -861,7 +861,7 @@ class FF_Creator
 
   /**
    * Add a radio button group.
-   * 
+   *
    * @param string $name
    * @param string $label
    * @param int $label_position
@@ -885,7 +885,6 @@ class FF_Creator
       'label' => $label,
       'label_position' => $label_position,
       'options' => $options,
-      'value' => $value,
       'attributes' => $this->_process_attributes($attributes, array('radiobuttons', 'field')),
       'rules' => $rules,
     ));
@@ -893,8 +892,8 @@ class FF_Creator
   }
 
   /**
-   * Add a button element with type=$type and "button" added to class value. 
-   * 
+   * Add a button element with type=$type and "button" added to class value.
+   *
    * @param string $name
    * @param string $value
    * @param string $type
@@ -915,7 +914,7 @@ class FF_Creator
 
   /**
    * Add a submit button.
-   * 
+   *
    * @param string $name
    * @param string $value
    * @param array $attributes
@@ -940,8 +939,8 @@ class FF_Creator
 
   /**
    * Add a password block, i.e. two fields: password + confirm password.
-   * Auto-validation supplied: required|min_length[6] and the two values must match. 
-   * 
+   * Auto-validation supplied: required|min_length[6] and the two values must match.
+   *
    * @param string $name
    * @param string $label
    * @param string $conf_label
@@ -964,9 +963,9 @@ class FF_Creator
 
   /**
    * Add text input with type="email" and "email" added to class value.
-   * Last argument $required can be a boolean for automatic rules, 
-   * or a Form_Validation rule string may be supplied. 
-   * 
+   * Last argument $required can be a boolean for automatic rules,
+   * or a Form_Validation rule string may be supplied.
+   *
    * @param string $name
    * @param string $label
    * @param string $value
@@ -981,15 +980,15 @@ class FF_Creator
 
     // by default set optimal rules for email validation, or allow manual rules
     $rules = is_bool($required) ? 'trim|' . ($required ? 'required|' : '') . 'valid_email|xss_clean' : $required;
-	
+
     return $this->add_text_field( $name, $label, $rules, $value, $attributes );
   }
 
   /**
    * Add text input with type="url" and "url" added to class value.
-   * Last argument $required can be a boolean for automatic rules, 
+   * Last argument $required can be a boolean for automatic rules,
    * or a Form_Validation rule string may be supplied.
-   * 
+   *
    * @param string $name
    * @param string $label
    * @param string $value
@@ -1001,19 +1000,19 @@ class FF_Creator
   {
     // add url class and set type = "url"
     $attributes = array_merge( $this->_process_attributes($attributes, array( 'url' )), array( 'type' => 'url' ) );
-	
+
     // set optimal rules for url validation, or allow manual rules
-    $rules = is_bool($required) ? 'trim|' . ($required ? 'required|' : '') . 'valid_url|prep_url|xss_clean' 
+    $rules = is_bool($required) ? 'trim|' . ($required ? 'required|' : '') . 'valid_url|prep_url|xss_clean'
 		                        : $required;
 
     return $this->add_text_field( $name, $label, $rules, $value, $attributes );
   }
-	
+
   /**
    * Add a text input with type="number" and "numeric" added to supplied class value.
-   * Last argument $required can be a boolean for automatic rules, 
-   * or a Form_Validation rule string may be supplied.  
-   * 
+   * Last argument $required can be a boolean for automatic rules,
+   * or a Form_Validation rule string may be supplied.
+   *
    * @param string $name
    * @param string $label
    * @param string $value
@@ -1023,9 +1022,9 @@ class FF_Creator
    */
   public function add_numeric_field ( $name = '', $label = '', $required = FALSE, $value = '', $attributes = array() )
   {
-    // add numeric class and set type="number" 
+    // add numeric class and set type="number"
     $attributes = array_merge( $this->_process_attributes($attributes, array( 'numeric' )), array( 'type' => 'number' ) );
-	  
+
     // by default set optimal rules for numeric validation, or use manual rule string
     $rules = is_bool($required) ? 'trim|' . ($required ? 'required|' : '') . 'numeric' : $required;
 
@@ -1034,9 +1033,9 @@ class FF_Creator
 
   /**
    * Add a text input with type="number" and "integer" added to supplied class value.
-   * Last argument $required can be a boolean for automatic rules, 
-   * or a Form_Validation rule string may be supplied.  
-   * 
+   * Last argument $required can be a boolean for automatic rules,
+   * or a Form_Validation rule string may be supplied.
+   *
    * @param string $name
    * @param string $label
    * @param string $value
@@ -1048,7 +1047,7 @@ class FF_Creator
   {
     // add integer class and set type="number" if type not explicitly overridden by user
     $attributes = array_merge( $this->_process_attributes($attributes, array( 'integer' )), array( 'type' => 'number' ) );
-	  
+
     // set optimal rules for email validation
     $rules = is_bool($required) ? 'trim|' . ($required ? 'required|' : '') . 'integer' : $required;
 

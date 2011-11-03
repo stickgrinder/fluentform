@@ -164,3 +164,13 @@ $config['fluentform_renderer']['error_classes'] = 'error';
 |
 */
 $config['fluentform_renderer']['required_classes'] = 'required';
+
+/*
+|--------------------------------------------------------------------------
+| Fill password fields
+|--------------------------------------------------------------------------
+|
+| Fill password fields with assigned value or submitted value.
+|
+*/
+$config['fluentform_renderer']['fill_password_value'] = FALSE;

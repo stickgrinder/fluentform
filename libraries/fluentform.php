@@ -41,6 +41,7 @@ class fluentform {
         'field_wrapper_classes' => 'field-wrapper',
         'error_show' => FF_R_ERROR_SHOW_FIELD,
         'error_position' => FF_R_ERRPOS_BEFORECLOSE,
+        'fill_password_value' => FALSE,
       ),
     );
 
