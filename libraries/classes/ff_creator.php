@@ -456,7 +456,7 @@ class FF_Creator
     if (!empty($name)) {
 
       // allow a fieldset and a field to have same name, since they are different in nature
-      $name .= '_fieldset';
+      $name = str_replace(' ', '_', strtolower($name)).'_fieldset';
 
       // add a key to the form
       $this->_form_structure['items'][$name] = array(
